@@ -9,8 +9,10 @@ function Home() {
     try {
       const resp = await axios.get("https://project-backend-1sg8.onrender.com/products");
       setData(resp.data);
+      setMsg("✅ Products loaded successfully!");
     } catch (e) {
-      console.log(e);
+      console.error(e);
+      setMsg("❌ Failed to load products. Please check the server.");
     }
   };
 
@@ -19,9 +21,12 @@ function Home() {
   }, []);
 
   return (
-    <>
+    <div style={{ padding: "20px", fontFamily: "Arial" }}>
       <h1>Products List</h1>
-      {data ? (
+
+      {msg && <p>{msg}</p>}
+
+      {data && data.length > 0 ? (
         data.map((d) => (
           <h2 key={d.id}>
             Product ID: {d.id} — {d.name} (Quantity: {d.qty})
@@ -30,8 +35,7 @@ function Home() {
       ) : (
         <h2>No data loaded</h2>
       )}
-      {msg && <p>{msg}</p>}
-    </>
+    </div>
   );
 }
 
